@@ -1,0 +1,20 @@
+# pnpm workspace manifest. Adding a folder here brings its package.json
+# into the workspace; pnpm hoists shared dependencies and lets one package
+# depend on another via "ledgerline-<name>": "workspace:*".
+
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Allow these dependencies to run their install build scripts. pnpm 11 blocks
+# native build scripts by default; on pnpm 11.2.2 the setting it actually reads
+# from this file is `allowBuilds` (a dep -> boolean map), NOT `onlyBuiltDependencies`
+# (that key is silently ignored here). esbuild powers tsx + Storybook/Vite
+# bundling; sharp is Next's image pipeline; unrs-resolver backs eslint's module
+# resolution; core-js-pure ships a benign postinstall. All needed for the
+# money-tracker app + Storybook rig.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  core-js-pure: true

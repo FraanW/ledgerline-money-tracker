@@ -1,0 +1,97 @@
+# =============================================================================
+# Ledgerline backend — application config.
+# =============================================================================
+# DATASOURCE — driven entirely from the environment (the brief's constraint).
+# A native PG17 may squat host 5432 with non-ledgerline creds, so we NEVER
+# hard-code host:port:creds here; we read SPRING_DATASOURCE_* (or compose them
+# from DATABASE_URL via an env mapping in your shell). The defaults below point
+# at the local docker-compose Postgres ONLY as a last-resort fallback so a fresh
+# clone with the compose stack up "just works".
+#
+# ALT-PORT OVERRIDE (when 5432 is taken by the native PG17):
+#   bring the compose Postgres up on 5433 (see infra/docker override note in the
+#   backend README) and run with:
+#     $env:SPRING_DATASOURCE_URL = "jdbc:postgresql://localhost:5433/ledgerline"
+#   Username/password come from SPRING_DATASOURCE_USERNAME / _PASSWORD.
+#
+# ROLE SPLIT (Sweep 2 — closes the ADR-0011 follow-up). Three connections,
+# three privilege levels:
+#   * RUNTIME POOL (spring.datasource) — connects as the NON-superuser
+#     `ledgerline_app`, so every tenant-scoped query is RLS-enforced for real,
+#     in dev exactly like prod. (Connecting the runtime as the owner/superuser
+#     silently bypasses RLS — discovered live, never again.)
+#   * FLYWAY (spring.flyway.user) — the owner role; V1 creates ledgerline_app
+#     and V3 sets FORCE RLS, both need owner.
+#   * CONTROL PLANE (ledgerline.control-plane.*, see IdentityConfig) — owner
+#     role for the few privileged identity operations (users provisioning,
+#     cross-tenant membership listing at login).
+# =============================================================================
+
+spring:
+  application:
+    name: ledgerline-backend
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ledgerline}
+    username: ${SPRING_DATASOURCE_USERNAME:ledgerline_app}
+    password: ${SPRING_DATASOURCE_PASSWORD:ledgerline_app}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: ledgerline-pool
+      maximum-pool-size: 10
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    # Flyway needs the OWNER role (DDL + role grants), independent of the
+    # app-role runtime pool above.
+    user: ${SPRING_FLYWAY_USER:ledgerline}
+    password: ${SPRING_FLYWAY_PASSWORD:ledgerline}
+    # Migrations are authored as V1-V13; baseline-on-migrate stays off so an
+    # already-populated non-Flyway DB is rejected rather than silently skipped.
+    baseline-on-migrate: false
+
+  # Statement uploads. Explicit caps (the Spring 1MB/10MB defaults are both too
+  # small for real multi-page PDF statements AND an un-tuned DoS surface). An
+  # over-limit upload now maps to a clean 413 via ApiExceptionAdvice.
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 20MB
+
+# Control-plane connection (privileged; used ONLY by IdentityService).
+ledgerline:
+  control-plane:
+    url: ${LEDGERLINE_CONTROLPLANE_URL:${spring.datasource.url}}
+    username: ${LEDGERLINE_CONTROLPLANE_USERNAME:ledgerline}
+    password: ${LEDGERLINE_CONTROLPLANE_PASSWORD:ledgerline}
+  # M3 enrichment sidecar (Sweep 3) — the Python canonicalizer service.
+  # Blank = disabled: ingestion abstains and merchants stay NULL. Fail-open
+  # either way; the sidecar can never break an upload.
+  canonicalizer:
+    url: ${LEDGERLINE_CANONICALIZER_URL:}
+  # Supabase auth (Sweep 4 finale). Blank = bearer tokens refused; set to the
+  # project URL and tokens verify against its PUBLIC JWKS (ES256/RS256 — no
+  # shared secret anywhere in this codebase).
+  supabase:
+    url: ${SUPABASE_URL:}
+  auth:
+    # The v0 X-User-Id dev header. Flip to false once the frontend cutover is
+    # complete — one property ends the dev era.
+    dev-headers-enabled: ${LEDGERLINE_DEV_HEADERS:true}
+
+# Actuator — health endpoint is the M16 observability foothold.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
+  health:
+    db:
+      enabled: true
+
+server:
+  port: ${SERVER_PORT:8080}

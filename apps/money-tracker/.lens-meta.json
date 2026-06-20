@@ -1,0 +1,184 @@
+[
+  {
+    "slug": "snowball-coach",
+    "oneLiner": "Knock out small debts first to build unstoppable momentum.",
+    "whatItIs": "This is Dave Ramsey's Debt Snowball: you pay minimums on everything, then throw every spare rupee at your smallest balance until it's gone. Ramsey treats debt as a behaviour problem, not a math problem, so you order by balance, not interest rate, because early wins keep you in the game.",
+    "whyItMatters": "Each cleared debt frees up its old minimum to attack the next one, so your payoff power snowballs and most people who feel progress actually finish instead of quitting.",
+    "howToRead": "Debts are stacked smallest to largest, and the snowball grows as each one clears and rolls its minimum into the next. Drag the extra-payment slider to watch your months-to-debt-free drop."
+  },
+  {
+    "slug": "conscious-spending",
+    "oneLiner": "Splurge guilt-free on what you love, automate the rest.",
+    "whatItIs": "This is Ramit Sethi's Conscious Spending Plan: instead of tracking every chai, you split take-home into four automated buckets and let it run. You spend extravagantly on the few things you genuinely love (your Money Dials) and cut hard on everything you don't.",
+    "whyItMatters": "Automating fixed costs, investments and savings means the right money moves the day your salary lands, so guilt-free spending is what's actually left over, not borrowed from your future.",
+    "howToRead": "Four bars show Fixed, Investments, Savings and Guilt-Free against their healthy target ranges. Star your Money Dials so the plan protects what you love when it suggests where to trim."
+  },
+  {
+    "slug": "cost-drag",
+    "oneLiner": "Fees are the one return-killer you fully control.",
+    "whatItIs": "This is John Bogle's costs-matter principle: your net return is the market's return minus whatever you pay in fees. Markets are unpredictable, but costs are certain, so cutting them is the single lever you can pull with confidence.",
+    "whyItMatters": "A fee that looks tiny each year compounds against you for decades, quietly eating a huge slice of your final corpus, which is why a low-cost index fund usually beats a pricey active one over time.",
+    "howToRead": "Two growth curves diverge: one with fees, one without. The shaded gap between them is the lifetime money your fees cost you, and the years slider shows how that gap widens the longer you stay invested."
+  },
+  {
+    "slug": "accumulator-score",
+    "oneLiner": "Wealth is what you keep, not what you earn.",
+    "whatItIs": "This is the Wealth Index from Stanley's The Millionaire Next Door: it benchmarks your net worth against what someone your age and income should have built. Real wealth is quiet accumulation, not a big salary or a flashy lifestyle.",
+    "whyItMatters": "Judging yourself by net worth instead of income tells you whether your money is actually staying with you, and it rewards a high savings rate over a high pay cheque you spend away.",
+    "howToRead": "The gauge places you in a Prodigious, Average or Under-Accumulator zone based on your net worth divided by what's expected for your age and income. The further right you sit, the more of what you earned you've actually kept."
+  },
+  {
+    "slug": "hours-of-life",
+    "oneLiner": "Every purchase has a real price: hours of your life.",
+    "whatItIs": "This is Vicki Robin's idea from Your Money or Your Life: money is life energy, the hours you traded to earn it. So the honest cost of anything isn't its rupee price but how many hours of your life it actually took.",
+    "whyItMatters": "Once a ₹2,000 dinner reads as half a workday, you spend on what's genuinely worth your time and stop trading precious hours for things you barely notice.",
+    "howToRead": "Set the sliders to get your real hourly wage, the take-home left after the true costs of working. Every spending category is then re-labelled in the hours of life it cost, so you see what each one really took from you."
+  },
+  {
+    "slug": "pay-yourself-first",
+    "oneLiner": "Save the first slice before you spend a rupee.",
+    "whatItIs": "This is the oldest rule in personal finance, from Clason's The Richest Man in Babylon and Bach's automatic approach: a part of all you earn is yours to keep. Route at least 10% to savings automatically the moment income lands, before any spending begins.",
+    "whyItMatters": "Saving first turns wealth-building into a default you never have to decide on again, so it survives busy months and weak willpower in a way leftover saving never does.",
+    "howToRead": "The timeline shows each salary credit followed by your first transfer-out to savings. The streak counter tracks consecutive months you paid yourself first, and the bars show your savings rate against the 10% line."
+  },
+  {
+    "slug": "latte-factor",
+    "oneLiner": "Small daily spends quietly cost you a fortune.",
+    "whatItIs": "This is David Bach's Latte Factor: the little recurring spends you barely register add up to serious money over a lifetime. The fix isn't deprivation but redirection, sending that same rupee into an automated investment instead.",
+    "whyItMatters": "A ₹150 daily habit is roughly ₹4,500 a month that could be a SIP, and over twenty years of compounding that gap between spent and invested becomes life-changing.",
+    "howToRead": "Your small recurring spends are ranked, each showing what it would be worth in 20 years if invested instead. Toggle any of them to watch the future-value total climb as you redirect them."
+  },
+  {
+    "slug": "time-buckets",
+    "oneLiner": "Spend on experiences while you're still able to.",
+    "whatItIs": "This is Bill Perkins' Time Buckets from Die With Zero: optimise for net fulfilment over net worth. Experiences pay memory dividends for the rest of your life, and many are only possible in a certain decade, so dying with a huge unspent pile is a kind of waste.",
+    "whyItMatters": "Mapping experiences to the right age stops you from endlessly deferring life to a someday that arrives too late to enjoy it, while still keeping your money plan honest.",
+    "howToRead": "Your life is split into age buckets, and you assign the experiences you want into the decade they fit best. They sit overlaid on your net-worth trajectory, so you can see what you can afford and when to actually do it."
+  },
+  {
+    "slug": "fungibility-sweep",
+    "oneLiner": "Idle money labelled for nothing should fund something.",
+    "whatItIs": "This is Richard Thaler's mental accounting: we file money into separate buckets and treat each one as off-limits to the others, so a rupee sitting in Dining never gets spent on a goal. The catch is that money is fungible, every rupee is identical, and those mental walls just leave leftovers idle.",
+    "whyItMatters": "Sweeping scattered surplus into one goal turns dead money into progress, often without you spending a rupee less on anything you actually wanted.",
+    "howToRead": "Watch the idle surplus drain out of each envelope and pool into your chosen goal, and read the progress ring as it fills from where you are now to where one sweep lands you."
+  },
+  {
+    "slug": "reference-framed-budget",
+    "oneLiner": "The same number feels like a win or a loss.",
+    "whatItIs": "This is Kahneman and Tversky's loss aversion: a loss lands about twice as hard as an equal-sized gain, so what counts as a win depends entirely on the reference point you compare against. Frame spending against your own past average and staying under budget reads as money kept, not money missed.",
+    "whyItMatters": "Seeing restraint as a real gain, not a missed chance to splurge, is what makes you keep doing it next month.",
+    "howToRead": "Each envelope is framed against its trailing average as money you kept or an amount you are over by, and they are ordered so the ones that hit hardest emotionally sit at the top."
+  },
+  {
+    "slug": "future-self-lock",
+    "oneLiner": "Save automatically now, because next month never feels different.",
+    "whatItIs": "This is David Laibson's present bias: we over-weight rewards we can have right now, so a promise to save next month quietly collapses once next month becomes today. The fix is a commitment device that locks the saving in advance, because a rule outlasts willpower.",
+    "whyItMatters": "Auto-routing a slice of every paycheck before you can touch it means the saving happens whether or not you feel disciplined that week.",
+    "howToRead": "Set the lock to send a fixed percent of each salary credit straight to a goal, and check the gauge of how much you spend in the first 48 hours after payday to see the bias you are designing around."
+  },
+  {
+    "slug": "subscription-leak",
+    "oneLiner": "Quitting a subscription feels like losing something. It isn't.",
+    "whatItIs": "This is the endowment effect and status-quo bias: once something is yours, cancelling it registers as a loss, so the default of doing nothing always wins. That is exactly why unused autopay subscriptions keep renewing long after you stopped using them.",
+    "whyItMatters": "Each forgotten ₹199-a-month renewal is over ₹2,000 a year leaking out, and cancelling even a few quietly lifts your savings rate with zero lifestyle hit.",
+    "howToRead": "Your subscriptions are ranked by what they cost you per year, and as you flip the cancel toggles the running tally shows exactly how much annual money you are taking back."
+  },
+  {
+    "slug": "raise-catcher",
+    "oneLiner": "Save the raise before lifestyle quietly eats it.",
+    "whatItIs": "This is Benartzi and Thaler's Save More Tomorrow: people won't cut today's spending to save, but they will pre-commit to saving more out of future raises, because their take-home pay never actually drops. You bank the increase before it ever feels like yours.",
+    "whyItMatters": "Catching even part of each raise compounds hard over a career and stops lifestyle creep from absorbing every increment you earn.",
+    "howToRead": "Your income timeline highlights the raise we detected and splits it into what you keep spending versus what future-you banks, projected forward so you can see what the saved share grows into."
+  },
+  {
+    "slug": "pain-restorer",
+    "oneLiner": "UPI makes spending painless, which is exactly the problem.",
+    "whatItIs": "This is Prelec and Loewenstein's pain of paying: the small sting of handing over money naturally reins in spending, but cards, UPI and autopay separate the paying from the buying and numb that sting. When a tap costs nothing emotionally, you tap more.",
+    "whyItMatters": "Restoring a little of that friction, even just by seeing it, pulls your spending back toward what you would do if you watched the cash leave.",
+    "howToRead": "Read the payment-method split to see how much runs through frictionless taps, then the spend-receipt that adds up your cumulative UPI payments the way watching notes leave your wallet would have felt."
+  },
+  {
+    "slug": "free-trap",
+    "oneLiner": "Free has a price, and it starts on a date.",
+    "whatItIs": "This is Dan Ariely's zero-price effect: a price of zero excites us out of proportion to its real value, which is why free trials and no-cost EMI lure you into commitments you would never pick at full price. The free part is the hook, not the deal.",
+    "whyItMatters": "Knowing the exact date free becomes paid lets you cancel on your terms instead of getting charged by default.",
+    "howToRead": "The trial-to-paid timeline counts down to your first real charge with a ring, and shows the projected yearly cost if you let the trial roll over and do nothing."
+  },
+  {
+    "slug": "anchor-reset",
+    "oneLiner": "Last month's budget is an anchor, not a target.",
+    "whatItIs": "This is Tversky and Kahneman's anchoring: we set budgets by clinging to an arbitrary starting number, usually last month's figure, even when it never matched reality. That stale anchor keeps you over-budgeting some envelopes and under-budgeting others, month after month.",
+    "whyItMatters": "Re-anchoring each budget to what you actually spend makes your plan match your life, so it finally guides instead of misleads.",
+    "howToRead": "These are the envelopes whose budget hasn't moved while real spend drifted away from it, each with a one-tap reset that re-anchors the budget to your true average."
+  },
+  {
+    "slug": "fifty-thirty-twenty",
+    "oneLiner": "Three buckets that tell you if your money's balanced.",
+    "whatItIs": "This is the 50/30/20 rule from Elizabeth Warren's All Your Worth: of every take-home rupee, keep needs under 50%, wants under 30%, and save at least 20%. It is deliberately coarse so you can run it in your head, not chase every transaction.",
+    "whyItMatters": "Three big ratios catch trouble fast: if rent and EMIs alone eat past half your salary, you see it before the month does. Hitting the 20% floor is what quietly funds your SIPs and emergency cushion.",
+    "howToRead": "Read the single stacked bar against the 50% and 80% gridlines: anything left of 50% is needs, the next slice is wants, the rest is savings. When a band turns amber it has breached its limit, so trim that bucket first."
+  },
+  {
+    "slug": "to-be-assigned",
+    "oneLiner": "Every rupee gets a job before you spend it.",
+    "whatItIs": "This is Jesse Mecham's core YNAB rule: give every rupee a job until nothing is left unassigned. You only budget money sitting in your account today, never a salary you expect next week.",
+    "whyItMatters": "Budgeting real money instead of a forecast kills the slow leak of cash that drifts away unnamed. The day your salary lands, you decide where it goes, so the month stops deciding for you.",
+    "howToRead": "Watch the big To Be Assigned number and fund envelopes until it counts down to zero. It only turns green at exactly zero, meaning every rupee you hold now has a job."
+  },
+  {
+    "slug": "years-to-fi",
+    "oneLiner": "How your savings rate, not your salary, buys freedom.",
+    "whatItIs": "This is the Trinity Study idea behind FIRE: once you have roughly 25 times your annual spending invested, a 4% yearly withdrawal can fund you for decades. The lever that moves the date is your savings rate, not how much you earn.",
+    "whyItMatters": "Two people on the same salary can retire fifteen years apart purely on what they save. Seeing the years shrink as you save more turns an abstract idea into a number you can actually push on.",
+    "howToRead": "The ring shows how far along you are; the net-worth curve climbs toward the FI line where work becomes optional. Drag the savings-rate slider and watch the years drop, which is the whole point of the view."
+  },
+  {
+    "slug": "cash-stack",
+    "oneLiner": "When the envelope's empty, that spending stops.",
+    "whatItIs": "This is the cash-stuffing envelope method: at the start of the month you pre-fill labelled envelopes with set amounts, one per category. When an envelope runs dry, spending in that category is done until next month, full stop.",
+    "whyItMatters": "A hard limit you can see beats a soft intention every time, because there is no overdraft and no borrowing from next week. It rebuilds the friction that UPI taps quietly removed.",
+    "howToRead": "Each envelope is a stack of cash that visibly shrinks as you spend against it. Once a stack hits zero it greys out and locks, so a glance tells you which categories are spent and which still have room."
+  },
+  {
+    "slug": "kakeibo",
+    "oneLiner": "Four quiet questions that make spending deliberate.",
+    "whatItIs": "This is Kakeibo, the mindful household ledger Hani Motoko introduced in Japan in 1904, built on four questions you answer each month. The practice is the act of recording: writing a spend down creates a small pause that curbs the next one.",
+    "whyItMatters": "Reflection, not restriction, is what changes habits that survive past January. Sorting a month into Needs, Wants, Culture and Unexpected shows you where money actually went, which is usually a surprise.",
+    "howToRead": "The month-end card walks you through the four questions in order, with your spending sorted into the four pillars and your intended saving checked against what really stayed. Sit with it slowly; reading it carefully is the exercise."
+  },
+  {
+    "slug": "thirty-day",
+    "oneLiner": "Wait 30 days and most wants quietly vanish.",
+    "whatItIs": "This is the cooling-off rule: instead of buying a non-essential want now, you park it on a list for 30 days first. Most urges fade on their own, and the few that survive the wait are the ones worth your money.",
+    "whyItMatters": "It separates a genuine want from a dopamine hit dressed up as one, with almost no willpower required. The delay does the deciding for you, and the savings add up to real money over a year.",
+    "howToRead": "Each wishlist card carries a 30-day countdown ring; when it matures the item asks keep or skip. Every skip is added to a running tally of the money you talked yourself out of spending."
+  },
+  {
+    "slug": "balance-sheet",
+    "oneLiner": "Which of your things actually pay you?",
+    "whatItIs": "This is Kiyosaki's core distinction from Rich Dad Poor Dad: an asset puts money in your pocket, a liability takes it out. The trap is buying liabilities (a financed car, a too-big EMI) while calling them assets.",
+    "whyItMatters": "When you sort your money honestly, you stop confusing 'expensive stuff' with wealth and start steering cash toward things that earn for you.",
+    "howToRead": "The left column lists what genuinely generates income; the right lists what drains it. The net-worth line at the bottom is the honest score after both are counted."
+  },
+  {
+    "slug": "compounding",
+    "oneLiner": "Time, not timing, is what makes you rich.",
+    "whatItIs": "Housel's lesson from The Psychology of Money is that wealth is mostly patience: a steady amount left alone compounds into something far larger than it feels like it should. The magic is in the years, not in clever moves.",
+    "whyItMatters": "Starting a small SIP today and not touching it usually beats a bigger amount started later, because compounding does its real work in the final decade.",
+    "howToRead": "Drag the inputs and watch the curve bend upward late: the early years look flat, then growth explodes once compounding takes over. That steep tail is the whole point."
+  },
+  {
+    "slug": "runway",
+    "oneLiner": "How many months can you survive with zero income?",
+    "whatItIs": "Runway is how long your savings keep you afloat if your salary stops tomorrow, measured in months of real expenses. A safety net is something you build to a target on purpose, not a number you hope is enough.",
+    "whyItMatters": "Knowing your exact runway turns a vague fear into a plan: you can see how many months of breathing room you have and how fast a cushion is within reach.",
+    "howToRead": "The burn-down chart shows your savings draining month by month at your current spend. The contingency planner then shows the monthly amount to save to hit a target cushion by a date you choose."
+  },
+  {
+    "slug": "make-room",
+    "oneLiner": "Surprise expense? Reshuffle, don't overspend.",
+    "whatItIs": "This applies YNAB's rules to absorb a shock: when something unplanned hits a full budget, you move money between envelopes instead of breaking the budget. Predictable surprises get pre-funded so they never feel like emergencies again.",
+    "whyItMatters": "Reshuffling keeps you out of the overspend-then-credit-card spiral, and pre-funding turns a recurring 'surprise' into a calm, already-handled line item.",
+    "howToRead": "Type in an expense and each envelope shows its breathing room and the hit it would take, plus a recovery plan. If the cost repeats, the view suggests a sinking fund to set aside a little each month."
+  }
+]

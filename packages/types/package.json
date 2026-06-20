@@ -1,0 +1,25 @@
+{
+  "name": "@ledgerline/types",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared contracts — domain entities, money, and Kafka event schemas. Imported by every service and app via workspace:*.",
+  "type": "module",
+  "//": "Consumed AS SOURCE: money-tracker uses Next transpilePackages, and tsc/Vite read the .ts directly. Pointing main/types/exports at src means NO build step is needed to resolve this package — a fresh CI checkout (no dist/) type-checks and builds. The `build` script still emits dist/ for anyone who wants the compiled artifact.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "files": ["src", "dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

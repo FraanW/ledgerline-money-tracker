@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* The ThemeProvider sets --ml-* tokens + base font on its wrapper. These are
+   fallbacks so anything rendered outside a provider still reads. */
+:root {
+  --ml-color-bg: #f7f8fa;
+  --ml-color-text: #11151c;
+  --ml-font-sans: ui-sans-serif, system-ui, sans-serif;
+  --ml-font-size-base: 15px;
+  --ml-line-height: 1.5;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+@layer base {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  /* One consistent, on-brand focus ring instead of the browser default. */
+  :focus-visible {
+    outline: 2px solid var(--ml-color-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  /* Money + figures align in columns. */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
+
+/* Gradient surfaces get light modeling (top highlight + bottom shade) so they
+   read as lit, not a flat fill — the #1 "AI mockup" tell. */
+.surface-gradient {
+  position: relative;
+  background: var(--ml-gradient-hero);
+  box-shadow: var(--ml-glow);
+  isolation: isolate;
+}
+.surface-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 15% 0%, rgba(255, 255, 255, 0.22), transparent 55%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.12), transparent 40%);
+}
+/* Keep real content above the highlight + grain overlays. */
+.surface-gradient > * {
+  position: relative;
+  z-index: 1;
+}
+/* Faint film grain so vivid/dark gradients don't visibly band. */
+.surface-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Respect reduced-motion across all the token-driven transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,44 @@
+-- =============================================================================
+-- M12 — Migration 0005: Idempotency UNIQUE on ledger_entries (txn, envelope)
+-- =============================================================================
+-- Worf's adversarial concurrency suite (M12) surfaced a TOCTOU window in
+-- LedgerService.postSpend: the "has this txn already been posted?" check is a
+-- plain SELECT with no UNIQUE constraint backing it. Under concurrent
+-- first-time replays of the SAME transactionId, every thread sees "no row yet"
+-- and all proceed to post — producing multiple transfer_ids for one txn.
+--
+-- The fix is to make the DATABASE the serialisation point. With this partial
+-- UNIQUE index in place, exactly one INSERT for a given (tenant, txn, envelope)
+-- can succeed; the loser threads catch the duplicate-key error and re-SELECT
+-- the winner's transfer_id. No more multi-transfer-per-txn.
+--
+-- WHY (tenant_id, transaction_id, envelope_id) AND NOT (tenant_id, transaction_id)
+-- -----------------------------------------------------------------------------
+-- A single posted spend produces TWO ledger_entries rows that share the SAME
+-- transaction_id (the from-envelope debit leg AND the Spent-envelope credit
+-- leg) — see LedgerService.postSpend. A UNIQUE on (tenant_id, transaction_id)
+-- alone would therefore reject the second leg of the very FIRST valid post,
+-- which is wrong.
+--
+-- Adding envelope_id to the key permits the two legs of one posted transfer
+-- (which touch two DIFFERENT envelopes), but rejects any further attempt to
+-- insert another (tenant, txn, fromEnvelope) row — which is exactly what a
+-- concurrent replay tries to do. The loser thread's insert of its from-leg
+-- raises SQLState 23505; the service catches it and re-SELECTs the winning
+-- transfer_id, returning it as a no-op.
+--
+-- TENANT SCOPING
+-- -----------------------------------------------------------------------------
+-- Scoped per tenant for consistency with the rest of this schema (cf.
+-- transactions_tenant_dedup_unique in V2). transaction_id is a UUID and
+-- effectively globally unique, so a global partial UNIQUE would also work,
+-- but tenant scoping is defense-in-depth.
+--
+-- The partial WHERE excludes rows where transaction_id IS NULL — pure rebudgets
+-- and rollover legs carry no transaction link and must remain insertable in
+-- any quantity.
+-- =============================================================================
+
+CREATE UNIQUE INDEX uq_ledger_entries_txn_envelope_per_tenant
+  ON ledger_entries (tenant_id, transaction_id, envelope_id)
+  WHERE transaction_id IS NOT NULL;

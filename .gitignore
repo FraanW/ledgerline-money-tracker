@@ -1,0 +1,60 @@
+# --- Node / pnpm ---
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
+npm-debug.log*
+
+# --- Build outputs ---
+dist/
+build/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+
+# --- Java / Gradle ---
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+bin/
+*.class
+
+# --- Python ---
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# --- Local secrets (never commit) ---
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# --- Local data / artifacts ---
+coverage/
+*.log
+*.lcov
+.cache/
+tmp/
+.tmp/
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# --- Docker / k8s scratch ---
+.kube-context-local
+*.kubeconfig
+
+# --- Test artifacts ---
+test-results/
+playwright-report/
