@@ -2,9 +2,9 @@
 
 # 🏦 Money Tracker
 
-### A correctness-first personal-finance app — **hardcore Java (Spring Boot) backend**, **Next.js frontend**.
+### A correctness-first personal-finance app — **hardcore Java (Spring Boot) backend**, a **Python AI statement analyser**, and a **Next.js frontend**.
 
-*A never-negative, double-entry envelope ledger on a multi-tenant, row-level-secured Postgres core. Built solo, end-to-end.*
+*A never-negative, double-entry envelope ledger on a multi-tenant, row-level-secured Postgres core, fed by a hybrid ML + LLM transaction-understanding service. Built solo, end-to-end.*
 
 [![CI](https://github.com/FraanW/ledgerline-money-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/FraanW/ledgerline-money-tracker/actions/workflows/ci.yml)
 ![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk&logoColor=white)
@@ -12,6 +12,8 @@
 ![Gradle](https://img.shields.io/badge/Gradle-multi--module-02303A?logo=gradle&logoColor=white)
 ![Postgres](https://img.shields.io/badge/PostgreSQL-RLS%20%2B%20Flyway%20V1–V13-4169E1?logo=postgresql&logoColor=white)
 ![Testcontainers](https://img.shields.io/badge/tests-JUnit%205%20%2B%20Testcontainers-25A162)
+![Python](https://img.shields.io/badge/Python-3.11%20·%20FastAPI-3776AB?logo=python&logoColor=white)
+![AI](https://img.shields.io/badge/AI-LangGraph%20%2B%20embeddings-FF6F61)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=nextdotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
 
@@ -32,6 +34,7 @@ If you're evaluating this for a **Java backend** role, start here:
 | AuthN/AuthZ | [`identity/`](backend/identity/src/main/java/com/ledgerline/identity) — Supabase JWT verification (Nimbus JOSE) + data-driven RBAC gate |
 | Idempotent ingestion | [`ingestion/IngestionService.java`](backend/ingestion/src/main/java/com/ledgerline/ingestion) — CSV/PDF parsing → dedup via `INSERT … ON CONFLICT` |
 | Schema design | [`platform-db` resources](backend/platform-db/src/main/resources) — 13 Flyway migrations, ~1,100 lines of intentional SQL |
+| AI / ML transaction understanding | [`services/canonicalizer`](services/canonicalizer) — hybrid rule → embedding NN → **LangGraph LLM** → abstain, precision-first, with eval guardrails |
 
 ---
 
@@ -85,11 +88,15 @@ graph TD
       PDB[":platform-db<br/>TenantContext (RLS), Flyway"]
       CON[":contracts<br/>pure-Java domain + events"]
     end
+    subgraph "Python AI service"
+      CANON["canonicalizer (M3)<br/>rule -> embedding -> LangGraph LLM"]
+    end
     DB[("PostgreSQL<br/>Row-Level Security")]
 
     FE -->|"REST /api/v0/*"| API
     API --> IDN
     API --> LED
+    ING -->|"HTTP: canonicalize merchant"| CANON
     ING --> CAT
     CAT --> LED
     API --> PDB
@@ -102,7 +109,7 @@ graph TD
     PDB -.-> CON
 ```
 
-**Request → ledger flow:** statement upload → `:ingestion` parses & dedups (`INSERT … ON CONFLICT`) → publishes each new txn → `:categorizer` matches a rule and resolves the target envelope → `:envelope-ledger` posts the spend under lock → frontend reads it back through `:api`. Every step runs inside one `TenantContext` transaction, so the tenant GUC, the connection, and the work are a single unit.
+**Request → ledger flow:** statement upload → `:ingestion` parses & dedups (`INSERT … ON CONFLICT`) → calls the **Python canonicalizer (M3)** over HTTP to clean the noisy merchant string → `:categorizer` matches a rule and resolves the target envelope → `:envelope-ledger` posts the spend under lock → frontend reads it back through `:api`. Every step runs inside one `TenantContext` transaction, so the tenant GUC, the connection, and the work are a single unit.
 
 | Module | Responsibility |
 |---|---|
@@ -160,6 +167,36 @@ CI runs the **full `./gradlew build`** (compile + every test, Testcontainers and
 
 ---
 
+## 🤖 The AI statement analyser — `services/canonicalizer` (Python · FastAPI)
+
+A raw Indian bank line is hostile: `UPI/BLINKIT/blinkcommerce.rzp@axisb/Payment`. The canonicalizer turns it into **`Blinkit` (Groceries)** — and, crucially, says **`UNKNOWN`** when it isn't sure. A wrong label is worse than no label.
+
+It's a **hybrid, precision-first pipeline** — cheap-and-explainable first, expensive-and-smart only for the genuinely ambiguous:
+
+```
+normalize ─▶ rule floor ─▶ embedding NN ─▶ confidence gate ─▶ [ LangGraph LLM | ABSTAIN ]
+(strip UPI/VPA/   (alias match,    (MiniLM over      (≥accept: take;     (adjudicate the
+ refs/city codes)  the cheap floor)  pgvector cosine)  <floor: abstain)    ambiguous middle)
+```
+
+- **Deterministic floor** carries the load — auditable, with generic-word traps (COIN / MORE / STAR / TATA) barred from auto-accepting.
+- **Embeddings** (sentence-transformers MiniLM over **pgvector**) recover the noisy tail, gated by a corroborating-token precision guard.
+- **LangGraph LLM fallback** — a small `StateGraph` (budget-gate → resolve → validate) constrained to the candidate set, behind a hard **`$` spend cap**. It can never invent a merchant.
+- **Composed reuse:** M11 categorization and recurring/anomaly detection (free-trap, price-hike, amount-spike) are built *on top of* the same M3 resolution.
+- **Fully explainable:** every response carries `method ∈ {rule, embedding, llm, abstain}` + candidates.
+
+**It's evaluated, with the eval wired as a CI gate** (fails on accuracy / abstain-recall / false-accept regression) — default config is the hashing embedder with the LLM off, so CI needs no model download or API key:
+
+| Eval | Result |
+|---|---|
+| Merchant canonicalization (126 rows) | **94.3%** known accuracy · **100%** abstain recall · **0** false-accepts on UNKNOWN · 99.0% precision |
+| Categorization (36 rows) | **100%** accuracy · **100%** uncategorized recall · **0** false categorizations |
+| Recurring + anomaly (6-month history) | recurring **P/R/F1 = 100%** · anomalies **100% recall, 0 false-positives** |
+
+**39 pytest tests** (the LangGraph/ML tests `importorskip` cleanly, so the base runtime tests the whole pipeline with deterministic fakes). HTTP surface: `POST /canonicalize`, `/canonicalize/batch`, `/categorize`, `/recurring`, `/healthz`. The Java `:ingestion` module calls it through an `HTTPMerchantCanonicalizer` client (best-effort — ingestion degrades gracefully if the service is down). Full design notes: [`services/canonicalizer/README.md`](services/canonicalizer/README.md).
+
+---
+
 ## 🎨 Frontend — Next.js 14, design-system first
 
 The `money-tracker` app (`apps/money-tracker`) is a **TypeScript-strict Next.js 14 (App Router)** front end, **live-wired** to the Java API through a typed fetch client (`src/lib/api.ts`, 30+ endpoints; shared `@ledgerline/types` contracts; money on the wire as `{ minor, currency }`).
@@ -178,7 +215,8 @@ The `money-tracker` app (`apps/money-tracker`) is a **TypeScript-strict Next.js 
 | **Persistence** | **PostgreSQL** + **Row-Level Security**, **Flyway** (V1–V13), hand-written `JdbcTemplate` SQL (no ORM) |
 | **Auth** | Supabase JWT (Nimbus JOSE JWT) + data-driven RBAC |
 | **Parsing** | Apache Commons CSV, Apache PDFBox |
-| **Testing** | JUnit 5, AssertJ, **Testcontainers** (Postgres) |
+| **Testing** | JUnit 5, AssertJ, **Testcontainers** (Postgres); pytest + eval guardrails (Python) |
+| **AI service** | Python 3.11, **FastAPI**, **LangGraph** + langchain-openai (OpenRouter), sentence-transformers (MiniLM), **pgvector** |
 | **Frontend** | Next.js 14 (App Router), React 18, TypeScript (strict), Tailwind, Storybook 8 |
 | **Tooling** | pnpm workspace, shared `@ledgerline/types` contracts |
 | **Event backbone** | Transactional **outbox** table in place (`V13`) — Kafka fan-out is the next milestone |
@@ -193,6 +231,18 @@ The `money-tracker` app (`apps/money-tracker`) is a **TypeScript-strict Next.js 
 cd backend
 ./gradlew build          # compile + full test suite (spins up Testcontainers Postgres)
 ./gradlew :app:bootRun   # boots the API on :8090 (point it at a local Postgres + run Flyway)
+```
+
+**AI service** (needs Python 3.11; runs with no model download or API key by default):
+
+```bash
+cd services/canonicalizer
+python -m venv .venv && source .venv/bin/activate   # (Windows: .venv\Scripts\activate)
+pip install -r requirements.txt -r requirements-dev.txt
+pytest && python eval/run_eval.py                    # tests + eval guardrail
+uvicorn canonicalizer.api:app --reload               # API on :8000
+# opt into capability: pip install -r requirements-ml.txt   (MiniLM)
+#                      pip install -r requirements-llm.txt  (LangGraph LLM)
 ```
 
 **Frontend** (needs Node 22 + pnpm):
@@ -220,6 +270,8 @@ ledgerline-money-tracker/
 │   ├── categorizer/         # rules engine + ledger bridge
 │   ├── api/                 # 11 REST controllers
 │   └── app/                 # Spring Boot bootstrap
+├── services/canonicalizer/  # Python · FastAPI AI service — M3 merchant analyser
+│                            #   (rule + MiniLM embeddings + LangGraph LLM + evals)
 ├── apps/money-tracker/      # Next.js 14 frontend + Storybook design system
 ├── packages/types/          # shared TS contracts (mirror of :contracts)
 ├── docs/                    # architecture, data model, API & module maps
@@ -236,4 +288,4 @@ This is the first surface of a larger fintech platform (Ledgerline). It runs **e
 
 ---
 
-<div align="center"><sub>Built solo by <a href="https://github.com/FraanW">Fraan</a> · Java backend · Next.js frontend</sub></div>
+<div align="center"><sub>Built solo by <a href="https://github.com/FraanW">Fraan</a> · Java backend · Python AI service · Next.js frontend</sub></div>

@@ -1,0 +1,8 @@
+# Base runtime — runs the service with the deterministic floor + hashing embedder
+# and the LLM disabled. Opt into heavier capability with the extra files.
+fastapi>=0.110
+uvicorn>=0.29
+pydantic>=2.6
+pydantic-settings>=2.2
+numpy>=1.26
+httpx>=0.27

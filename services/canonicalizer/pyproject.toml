@@ -1,0 +1,27 @@
+[project]
+name = "ledgerline-canonicalizer"
+version = "0.1.0"
+description = "M3 — merchant canonicalization (deterministic floor + MiniLM embeddings + LangGraph LLM fallback)"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+  "pydantic>=2.6",
+  "pydantic-settings>=2.2",
+  "numpy>=1.26",
+  "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+# Real semantic embeddings (heavy — torch). Enabled with CANON_USE_REAL_MODEL=true.
+ml = ["sentence-transformers>=2.7"]
+# LangGraph-orchestrated LLM fallback over OpenRouter.
+llm = ["langgraph>=0.2", "langchain-core>=0.3", "langchain-openai>=0.2"]
+# pgvector-backed store.
+pg = ["psycopg[binary]>=3.1", "pgvector>=0.2"]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

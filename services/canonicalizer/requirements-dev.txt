@@ -1,0 +1,7 @@
+# Dev/test dependencies for the canonicalizer service.
+# CI (ledgerline-ci.yml, the Python job) installs requirements.txt then this
+# file, so `pytest` is on PATH for the test step. The heavier optional extras
+# live in requirements-ml.txt / requirements-llm.txt; the test suite uses
+# deterministic fakes and pytest.importorskip()s langgraph/langchain, so the
+# base runtime + pytest is all CI needs — the LLM/ML tests skip cleanly.
+pytest>=8.0
