@@ -21,7 +21,7 @@
 
 ---
 
-## TL;DR for reviewers
+## TL;DR
 
 > A real **financial ledger**, not a CRUD app. Money moves as **double-entry** transactions that are **guaranteed never to overspend an envelope** — and that guarantee holds **under concurrent posting**, proven by an adversarial multi-threaded test suite running against real Postgres in Testcontainers.
 
@@ -46,7 +46,7 @@ The product is a deliberately narrow MVP. **The backend is the work** — correc
 
 ---
 
-## 🏆 The crown jewel — the never-negative double-entry ledger
+## 🏦 The never-negative double-entry ledger
 
 Every money movement is a **balanced transfer**: a set of signed ledger entries that **sum to zero**. Two invariants make the budget *real*, and both are enforced server-side, in Java, under lock:
 
@@ -124,7 +124,7 @@ graph TD
 
 ---
 
-## ☕ Core Java & backend engineering on display
+## ☕ Core Java & backend engineering
 
 | Area | What's demonstrated | Where |
 |---|---|---|
@@ -152,11 +152,11 @@ graph TD
 
 ---
 
-## 🧪 Testing — correctness is the point
+## 🧪 Testing
 
 **22 test classes**, JUnit 5 + AssertJ, integration tests on **real Postgres via Testcontainers** (dual-mode: containers in CI, or an external port locally). Tests run against the **non-superuser app role**, so RLS is genuinely exercised — not bypassed.
 
-- **`LedgerConcurrencyTest`** — never-negative, atomic-transfer, idempotency, and deadlock-freedom under concurrent threads. The headline suite.
+- **`LedgerConcurrencyTest`** — never-negative, atomic-transfer, idempotency, and deadlock-freedom under concurrent threads.
 - **`RlsIsolationTest`** — proves one tenant cannot see another's rows.
 - **`BearerAuthIntegrationTest` / `SupabaseJwtVerifierTest`** — JWT happy-path + rejection.
 - **`IdentityRbacIntegrationTest`** — provisioning, workspace creation, permission checks.
@@ -284,7 +284,7 @@ ledgerline-money-tracker/
 
 ## A note on scope
 
-This is the first surface of a larger fintech platform (Ledgerline). It runs **end-to-end locally**; a cloud deploy is **deliberately deferred** to keep the focus on backend correctness rather than ops theatre. The ledger, multi-tenancy, auth, ingestion, and the wired frontend are all **built and tested** — that's the part worth reviewing.
+This is the first surface of a larger fintech platform (Ledgerline). It runs **end-to-end locally**; a cloud deploy is **deliberately deferred** to keep the focus on backend correctness rather than deployment plumbing. The ledger, multi-tenancy, auth, ingestion, and the wired frontend are all **built and tested** — that's the part worth reviewing.
 
 ---
 
